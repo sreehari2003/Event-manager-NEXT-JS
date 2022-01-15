@@ -1,4 +1,6 @@
-const DUMMY_EVENTS = [
+const fs = require("fs");
+
+const va = [
   {
     id: "e1",
     title: "Programming for everyone",
@@ -30,45 +32,4 @@ const DUMMY_EVENTS = [
     isFeatured: true,
   },
 ];
-
-const callAsysnc = async () => {
-  const res = await fetch(
-    "https://event-next-d962d-default-rtdb.firebaseio.com/events.json"
-  );
-  const data = await res.json();
-  let events = [];
-  for (const key in data) {
-    events.push({
-      id: key,
-      ...data[key],
-    });
-  }
-  return events;
-};
-
-export async function getFeaturedEvents() {
-  const d = await callAsysnc();
-  return d.filter((event) => event.isFeatured);
-}
-
-export async function getAllEvents() {
-  return await callAsysnc();
-}
-
-export async function getFilteredEvents(dateFilter) {
-  const { year, month } = dateFilter;
-  const data = await callAsysnc();
-  let filteredEvents = data.filter((event) => {
-    const eventDate = new Date(event.date);
-    return (
-      eventDate.getFullYear() === year && eventDate.getMonth() === month - 1
-    );
-  });
-
-  return filteredEvents;
-}
-
-export async function getEventById(id) {
-  const dat = await callAsysnc();
-  return dat.find((event) => event.id === id);
-}
+fs.writeFileSync("dumm.json", JSON.stringify(va));
