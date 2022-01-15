@@ -18,4 +18,20 @@ a {
 .center {
   margin: auto;
   text-align: center;
+  padding: 20px 30px;
+  margin: 40px 0 0 0;
+  background-color: grey;
+  color: white;
+  font-size: 25px;
+}
+.wrapper {
+  display: grid;
+  place-items: center;
+}
+.px {
+  padding: 20px 30px;
+  margin: 40px 0 0 0;
+  background-color: grey;
+  color: white;
+  font-size: 25px;
 }

@@ -1,30 +1,29 @@
 import React from "react";
-import { useRouter } from "next/router";
 import { getEventById } from "../../DUMMEY";
 import Error from "next/error";
 import EventSummary from "../../components/event-detail/event-summary";
 import EventLogistics from "../../components/event-detail/event-logistics";
 import EventContent from "../../components/event-detail/event-content";
 
-const EventDetailPage = () => {
-  const router = useRouter();
-  const path = router.query.id;
-  const event = getEventById(path);
-  console.log(event);
-  if (!event) {
-    return <Error statusCode={404} />;
+const EventDetailPage = ({ data }) => {
+  if (!data) {
+    return (
+      <div className="wrapper">
+        <h1 className="center">LOADING.....</h1>
+      </div>
+    );
   } else {
     return (
       <>
-        <EventSummary title={event.title} />
+        <EventSummary title={data.title} />
         <EventLogistics
-          date={event.date}
-          address={event.location}
-          image={event.image}
-          imageAlt={event.title}
+          date={data.date}
+          address={data.location}
+          image={data.image}
+          imageAlt={data.title}
         />
         <EventContent>
-          <p>{event.description}</p>
+          <p>{data.description}</p>
         </EventContent>
       </>
     );
@@ -32,3 +31,40 @@ const EventDetailPage = () => {
 };
 
 export default EventDetailPage;
+
+export const getStaticProps = async (ctx) => {
+  const { params } = ctx;
+  const id = params.id;
+  const data = await getEventById(id);
+
+  if (!data) {
+    return {
+      notFound: true,
+    };
+  }
+  return {
+    props: {
+      data,
+    },
+  };
+};
+
+//just an example
+
+export const getStaticPaths = async () => {
+  return {
+    fallback: true,
+    paths: [
+      {
+        params: {
+          id: "/events/e1",
+        },
+      },
+      {
+        params: {
+          id: "events/e2",
+        },
+      },
+    ],
+  };
+};

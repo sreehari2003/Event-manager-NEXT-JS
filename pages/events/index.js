@@ -3,9 +3,8 @@ import { getAllEvents } from "../../DUMMEY";
 import EventList from "../../components/events/EventList";
 import EventSearch from "../../components/events/EventSearch";
 import { useRouter } from "next/router";
-const Events = () => {
+const Events = ({ data }) => {
   const router = useRouter();
-  const events = getAllEvents();
   const findEvents = (year, month) => {
     const path = `/events/${year}/${month}`;
     router.push(path);
@@ -13,8 +12,17 @@ const Events = () => {
   return (
     <div>
       <EventSearch change={findEvents} />
-      <EventList items={events} />
+      <EventList items={data} />
     </div>
   );
 };
 export default Events;
+
+export const getStaticProps = async () => {
+  const data = await getAllEvents();
+  return {
+    props: {
+      data,
+    },
+  };
+};

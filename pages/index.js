@@ -1,8 +1,7 @@
 import React from "react";
 import { getFeaturedEvents } from "../DUMMEY";
 import EventList from "../components/events/EventList";
-const Home = () => {
-  const DATA = getFeaturedEvents();
+const Home = ({ DATA }) => {
   return (
     <div>
       <EventList items={DATA} />
@@ -11,3 +10,11 @@ const Home = () => {
 };
 
 export default Home;
+export const getStaticProps = async () => {
+  const DATA = await getFeaturedEvents();
+  return {
+    props: {
+      DATA,
+    },
+  };
+};
